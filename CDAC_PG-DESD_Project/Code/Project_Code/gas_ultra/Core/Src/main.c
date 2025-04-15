@@ -108,26 +108,30 @@ void vDistanceTask(void *pvParameters)
 			}
         vTaskDelay(pdMS_TO_TICKS(1000)); 
     }
+   vTaskDelete(NULL);
 }
 void vTEMPDataSendingTask(void *pvParam)
 {
 	   char buffer[64];
 	   portTickType xLastTime = xTaskGetTickCount();
 	   while(1){
-        DHT_GetData(&DHT11_Data);
+            DHT_GetData(&DHT11_Data);
 	    Temperature = DHT11_Data.Temperature;
 	    Humidity = DHT11_Data.Humidity;
 
 	    sprintf(buffer, "Humidity = %d and Temperature = %d\r\n", Humidity,Temperature);
 	    HAL_UART_Transmit(&huart2, (uint8_t *)buffer,  sizeof(buffer), HAL_MAX_DELAY);
+	    
+	    
          if(Temperature>65){
+         
 			HAL_GPIO_TogglePin(GPIOD, GPIO_PIN_14);
 		sprintf(buffer, "The Temperature is very high to work........\r\n");
-	 HAL_UART_Transmit(&huart2, (uint8_t *)buffer,  sizeof(buffer), HAL_MAX_DELAY);
+	        HAL_UART_Transmit(&huart2, (uint8_t *)buffer,  sizeof(buffer), HAL_MAX_DELAY);
 	 		}
 	    vTaskDelayUntil(&xLastTime, 2000 / portTICK_RATE_MS);
 	   }
-		vTaskDelete(NULL);
+ 	vTaskDelete(NULL);
 }
 /* USER CODE END 0 */
 

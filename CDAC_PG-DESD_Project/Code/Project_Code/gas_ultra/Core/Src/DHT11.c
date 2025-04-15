@@ -6,18 +6,14 @@
 #include "system_stm32f4xx.h"
 
 #define TYPE_DHT11
-
-
-
 #define DHT_PORT GPIOA
 #define DHT_PIN GPIO_PIN_5
 
 
-
-
-
 uint8_t Rh_byte1, Rh_byte2, Temp_byte1, Temp_byte2;
 uint16_t SUM; uint8_t Presence = 0;
+
+
 
 #include "DHT11.h"
 
@@ -108,7 +104,9 @@ uint8_t DHT_Check_Response (void)
 	if (!(HAL_GPIO_ReadPin (DHT_PORT, DHT_PIN)))
 	{
 		delay (80);
-		if ((HAL_GPIO_ReadPin (DHT_PORT, DHT_PIN))) Response = 1;
+		if ((HAL_GPIO_ReadPin (DHT_PORT, DHT_PIN))) {
+		     Response = 1;
+		     }
 		else Response = -1;
 	}
 	while ((HAL_GPIO_ReadPin (DHT_PORT, DHT_PIN)));   // wait for the pin to go low
